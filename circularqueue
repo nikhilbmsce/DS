@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 5     // Size of circular queue
+
+int queue[SIZE];
+int front = -1, rear = -1;
+
+// Insert an element into the circular queue
+void insert() {
+    int item;
+
+    // Check for overflow condition
+    if ((front == 0 && rear == SIZE - 1) || (rear + 1) % SIZE == front) {
+        printf("\nQueue Overflow! Cannot insert.\n");
+        return;
+    }
+
+    printf("\nEnter the element to insert: ");
+    scanf("%d", &item);
+
+    // First element insertion
+    if (front == -1) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % SIZE;
+    }
+
+    queue[rear] = item;
+    printf("Inserted %d into the queue.\n", item);
+}
+
+// Delete an element from the circular queue
+void delete() {
+    if (front == -1) {
+        printf("\nQueue Underflow! No elements to delete.\n");
+        return;
+    }
+
+    printf("\nDeleted element: %d\n", queue[front]);
+
+    // If only one element was left
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % SIZE;
+    }
+}
+
+// Display elements of the circular queue
+void display() {
+    if (front == -1) {
+        printf("\nQueue is empty.\n");
+        return;
+    }
+
+    printf("\nCircular Queue elements are:\n");
+
+    int i = front;
+    while (1) {
+        printf("%d ", queue[i]);
+        if (i == rear)
+            break;
+        i = (i + 1) % SIZE;
+    }
+    printf("\n");
+}
+
+// Main menu
+int main() {
+    int choice;
+
+    while (1) {
+        printf("\n---- Circular Queue Menu ----\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: insert(); break;
+            case 2: delete(); break;
+            case 3: display(); break;
+            case 4: exit(0);
+            default: printf("\nInvalid choice! Try again.\n");
+        }
+    }
+
+    return 0;
+}
+
+
+
+
+OUTPUT
+
+---- Circular Queue Menu ----
+1. Insert
+2. Delete
+3. Display
+4. Exit
+Enter your choice: 1
+
+Enter the element to insert: 2
+Inserted 2 into the queue.
+
+---- Circular Queue Menu ----
+1. Insert
+2. Delete
+3. Display
+4. Exit
+Enter your choice: 1
+
+Enter the element to insert: 5
+Inserted 5 into the queue.
+
+---- Circular Queue Menu ----
+1. Insert
+2. Delete
+3. Display
+4. Exit
+Enter your choice: 3
+
+Circular Queue elements are:
+2 5
+
+---- Circular Queue Menu ----
+1. Insert
+2. Delete
+3. Display
+4. Exit
+Enter your choice:
