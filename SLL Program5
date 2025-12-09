@@ -1,0 +1,227 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Function prototypes
+void createList(struct Node **head);
+void display(struct Node *head);
+void deleteFirst(struct Node **head);
+void deleteLast(struct Node **head);
+void deleteSpecific(struct Node **head, int value);
+
+int main() {
+    struct Node *head = NULL;
+    int choice, value;
+
+    do {
+        printf("\n---- Singly Linked List Operations ----\n");
+        printf("1. Create Linked List\n");
+        printf("2. Delete First Element\n");
+        printf("3. Delete Specific Element\n");
+        printf("4. Delete Last Element\n");
+        printf("5. Display List\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                createList(&head);
+                break;
+
+            case 2:
+                deleteFirst(&head);
+                break;
+
+            case 3:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                deleteSpecific(&head, value);
+                break;
+
+            case 4:
+                deleteLast(&head);
+                break;
+
+            case 5:
+                display(head);
+                break;
+
+            case 6:
+                printf("Exiting...\n");
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+    } while(choice != 6);
+
+    return 0;
+}
+
+// Create linked list
+void createList(struct Node **head) {
+    int n, value;
+    struct Node *temp, *newNode;
+
+    printf("How many nodes do you want? ");
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++) {
+        printf("Enter value for node %d: ", i + 1);
+        scanf("%d", &value);
+
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = value;
+        newNode->next = NULL;
+
+        if (*head == NULL) {
+            *head = newNode;
+        } else {
+            temp = *head;
+            while (temp->next != NULL)
+                temp = temp->next;
+            temp->next = newNode;
+        }
+    }
+}
+
+// Display linked list
+void display(struct Node *head) {
+    struct Node *temp = head;
+
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    printf("Linked List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+// Delete first node
+void deleteFirst(struct Node **head) {
+    if (*head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    struct Node *temp = *head;
+    *head = (*head)->next;
+    free(temp);
+    printf("First node deleted.\n");
+}
+
+// Delete last node
+void deleteLast(struct Node **head) {
+    if (*head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    if ((*head)->next == NULL) {
+        free(*head);
+        *head = NULL;
+        printf("Last node deleted.\n");
+        return;
+    }
+
+    struct Node *temp = *head;
+    while (temp->next->next != NULL)
+        temp = temp->next;
+
+    free(temp->next);
+    temp->next = NULL;
+    printf("Last node deleted.\n");
+}
+
+// Delete specific node
+void deleteSpecific(struct Node **head, int value) {
+    struct Node *temp = *head;
+    struct Node *prev = NULL;
+
+    if (*head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    // Node to delete is first node
+    if (temp->data == value) {
+        *head = temp->next;
+        free(temp);
+        printf("Node with value %d deleted.\n", value);
+        return;
+    }
+
+    // Search for the node
+    while (temp != NULL && temp->data != value) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Value %d not found.\n", value);
+        return;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+    printf("Node with value %d deleted.\n", value);
+}
+
+
+
+
+
+OUTPUT:
+---- Singly Linked List Operations ----
+1. Create Linked List
+2. Delete First Element
+3. Delete Specific Element
+4. Delete Last Element
+5. Display List
+6. Exit
+Enter your choice: 1
+How many nodes do you want? 3
+Enter value for node 1: 10
+Enter value for node 2: 100
+Enter value for node 3: 1000
+
+---- Singly Linked List Operations ----
+1. Create Linked List
+2. Delete First Element
+3. Delete Specific Element
+4. Delete Last Element
+5. Display List
+6. Exit
+Enter your choice: 3
+Enter value to delete: 100
+Node with value 100 deleted.
+
+---- Singly Linked List Operations ----
+1. Create Linked List
+2. Delete First Element
+3. Delete Specific Element
+4. Delete Last Element
+5. Display List
+6. Exit
+Enter your choice: 5
+Linked List: 10 -> 1000 -> NULL
+
+---- Singly Linked List Operations ----
+1. Create Linked List
+2. Delete First Element
+3. Delete Specific Element
+4. Delete Last Element
+5. Display List
+6. Exit
+Enter your choice:
