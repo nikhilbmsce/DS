@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+#define MAX 20
+
+int ht[MAX];
+int m;
+
+/* Insert key using Linear Probing */
+void insert(int key) {
+    int index, i;
+
+    index = key % m;
+
+    if (ht[index] == -1) {
+        ht[index] = key;
+        printf("Key %d inserted at address %d\n", key, index);
+    } else {
+        printf("Collision occurred at address %d\n", index);
+        for (i = (index + 1) % m; i != index; i = (i + 1) % m) {
+            if (ht[i] == -1) {
+                ht[i] = key;
+                printf("Key %d inserted at address %d\n", key, i);
+                return;
+            }
+        }
+        printf("Hash table is full\n");
+    }
+}
+
+/* Display Hash Table */
+void display() {
+    int i;
+    printf("\nHash Table Contents:\n");
+    for (i = 0; i < m; i++) {
+        if (ht[i] != -1)
+            printf("Address %d : %d\n", i, ht[i]);
+        else
+            printf("Address %d : Empty\n", i);
+    }
+}
+
+int main() {
+    int n, key, i;
+
+    printf("Enter size of hash table (m): ");
+    scanf("%d", &m);
+
+    for (i = 0; i < m; i++)
+        ht[i] = -1;
+
+    printf("Enter number of employee records: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter 4-digit key: ");
+        scanf("%d", &key);
+        insert(key);
+    }
+
+    display();
+    return 0;
+}
